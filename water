@@ -1,0 +1,26 @@
+import cv2
+import numpy as np
+
+img = cv2.imread('ws.png')
+gray = cv2.imread('ws.png',0)
+thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
+
+kernel = np.ones((3, 3), np.uint8)
+opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
+bg = cv2.dilate(opening, kernel)
+
+bff= cv2.distanceTransform(opening, cv2.DIST_L2, 5)
+fg = cv2.threshold(bff, 0.7 * bff.max(), 255, 0)[1]
+
+unknown = cv2.subtract(bg, np.uint8(fg))
+markers = cv2.connectedComponents(np.uint8(fg))[1]
+markers = markers + 1
+markers[unknown == 255] = 0
+
+cv2.watershed(img, markers)
+img[markers == -1] = [0, 0, 255]
+
+cv2.imshow('Threshold', thresh)
+cv2.imshow('Watershed Result', img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
