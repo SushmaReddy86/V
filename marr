@@ -1,0 +1,10 @@
+import cv2
+import numpy as np
+img=cv2.imread('hf.jpg',0)
+gb=cv2.GaussianBlur(img,(5,5),0)
+lap=cv2.Laplacian(gb,cv2.CV_64F)
+res=np.uint8(np.abs(lap)>0)*255
+cv2.imshow("canny",res)
+cv2.imshow("cany",lap)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
