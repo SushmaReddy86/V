@@ -1,0 +1,11 @@
+import cv2
+import numpy as np
+img=cv2.imread('cimg1.jpg',0)
+ker=np.ones((5,5),np.uint8)
+cimg=cv2.bitwise_not(img)
+e1=cv2.erode(img,ker)
+e2=cv2.erode(cimg,ker)
+res=cv2.bitwise_and(e1,e2)
+cv2.imshow("hom",res)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
