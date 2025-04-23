@@ -1,0 +1,13 @@
+import cv2
+import numpy as np 
+img=cv2.imread('hf.jpg',0)
+bimg=cv2.threshold(img,127,255,cv2.THRESH_BINARY)[1]
+ff=bimg.copy()
+h,w=ff.shape
+ker=np.zeros((h+2,w+2),np.uint8)
+cv2.floodFill(ff,ker,(0,0),255)
+fimg=cv2.bitwise_not(ff)
+res=cv2.bitwise_or(fimg,bimg)
+cv2.imshow("filled",res)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
